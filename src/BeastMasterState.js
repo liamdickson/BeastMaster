@@ -16,21 +16,12 @@ module.exports = State.extend({
             'required': false,
             'values': config.tests
         },
-        testData: 'string',
-        error: 'string',
-        endpoint: {
-            'type': 'string',
-            'default': null
-        },
-        isLoading: {
-            'type': 'boolean',
-            default: true
-        }
+        testData: 'string'
     },
     toUrlString() {
         if (this.service) {
-            return `/${this.service}/${this.test}/`;
+            return `/${this.service}/`;
         }
-        return `/`;
+        return '/';
     }
 });

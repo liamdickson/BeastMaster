@@ -14,7 +14,6 @@ BeastMasterMain = React.createClass({
         };
     },
     render: function () {
-        console.log('BeastMasterMain: ', this.props);
         var className = "beast-master-main-wrapper";
         return (
             <div className={className} id="wrapper">

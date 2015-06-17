@@ -1,11 +1,14 @@
 'use strict';
 
-var React = require('react');
 var BeastMasterRouter = require('./BeastMasterRouter');
 var BeastMasterApp = require('./BeastMasterApp');
+var React = require('react');
+
+var router;
 
 var context = window.context = BeastMasterApp.createContext();
-var router = new BeastMasterRouter({context: context.getComponentContext()});
+
+router = new BeastMasterRouter({context: context.getComponentContext()});
 router.history.start({pushState: true});
 
 React.render(

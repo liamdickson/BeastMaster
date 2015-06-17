@@ -12,43 +12,19 @@ class BeastMasterStore extends BaseStore {
         return this.model;
     }
 
-    loading() {
-        this.model.set('isLoading', true);
-    }
-
     set(payload) {
         this.model.set(payload);
-    }
-
-    fetched(payload) {
-        this.model.set('isLoading', false);
-        this.model.set('testData', payload);
-        this.model.unset('error');
-    }
-
-    error(payload) {
-        this.model.set('isLoading', false);
-        this.model.set('error', payload);
     }
 
     getUrlForProps(props) {
         var model = new BeastMasterState(props);
         return model.toUrlString();
     }
-
-    changeEndpoint(payload) {
-        console.log(payload);
-        this.model.set('endpoint', payload);
-    }
 }
 
 BeastMasterStore.storeName = 'BeastMasterStore';
 BeastMasterStore.handlers = {
-    'loading': 'loading',
-    'fetched': 'fetched',
-    'endpointSelected': 'changeEndpoint',
-    'error': 'error',
-    'navigated' : 'set'
+    'navigate' : 'set'
 };
 
 module.exports = BeastMasterStore;
