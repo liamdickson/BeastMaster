@@ -26,7 +26,7 @@ module.exports = State.extend({
             'default': true
         },
         testData: {
-            'type': 'array',
+            'type': 'object',
             'default': config.testData
         }
     },

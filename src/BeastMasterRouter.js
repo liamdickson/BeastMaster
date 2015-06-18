@@ -24,10 +24,6 @@ module.exports = Router.extend({
         payload.service = service || config.services[0];
         payload.test = test || '';
         this.context.executeAction(actions.navigate, payload);
-        if(!test){
-            this.context.executeAction(actions.loadRecentTests);
-        }else{
-            this.context.executeAction(actions.loadTest, payload);
-        }
+        this.context.executeAction(actions.loadRecentTests, payload);
     }
 });

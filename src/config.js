@@ -20,6 +20,6 @@ module.exports = {
         }
     },
     testData: function () {
-        return [];
+        return {};
     }
 };

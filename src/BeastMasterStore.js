@@ -2,6 +2,7 @@
 
 var BaseStore = require('fluxible/addons/BaseStore');
 var BeastMasterState = require('./BeastMasterState');
+var timeConverter = require('./components/mixins/timeConverter');
 var $ = require('jquery');
 
 class BeastMasterStore extends BaseStore {
@@ -19,23 +20,17 @@ class BeastMasterStore extends BaseStore {
         this.model.set('isLoading', true);
     }
 
-    loadTest() {
-        this.model.set('isLoading', true);
-        this.model.set('isLoading', false);
-    }
-
-    loadRecentTests() {
-        var self = this;
+    loadRecentTests(payload) {
         var loadAll;
         this.loading();
-        this.model.set({testData: []});
-        var testData = [];
+        this.model.set({testData: {}});
+        var testData = {};
 
         $.ajax({
             url: "/data/dev-output.json",
             async: true,
             success: (data)=>{
-                testData.push(data);
+                testData[timeConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });
@@ -43,15 +38,18 @@ class BeastMasterStore extends BaseStore {
             url: "/data/qa-output.json",
             async: true,
             success: (data)=>{
-                testData.push(data);
+                testData[timeConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });
 
-        loadAll = function() {
-            if(testData.length === 2) {
-                self.model.set({testData});
-                self.model.set('isLoading', false);
+        loadAll = ()=>{
+            if(Object.keys(testData).length === 2) {
+                this.model.set({testData});
+                if(payload.test){
+                    this.model.set('test', payload.test);
+                }
+                this.model.set('isLoading', false);
             }
         };
     }

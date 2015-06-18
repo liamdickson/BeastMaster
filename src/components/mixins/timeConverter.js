@@ -7,7 +7,7 @@
 'use strict';
 
 module.exports = {
-    hrToEpoch: function (hr){
+    hrToEpoch: function (hr) {
         var date = new Date(hr);
         var epoch = date.getTime()/1000.0;
         return epoch.toString();

@@ -3,10 +3,10 @@
 var React = require('react');
 var config = require('../config');
 var {Nav, NavItem, Panel} = require('react-bootstrap');
+var TestList = require('./TestList');
 var linkConstructor = require('./mixins/linkConstructor');
 var timeConverter = require('./mixins/timeConverter');
 var partial = require('lodash.partial');
-var TestRunElement = require('./TestRunElement');
 
 module.exports = React.createClass({
     mixins: [linkConstructor, timeConverter],
@@ -19,9 +19,9 @@ module.exports = React.createClass({
         }else{
             if(this.props.model.test){
                 testList = (
-                    <div>NO TEST DATA</div>
+                    <div>{JSON.stringify(this.props.model.testData[this.props.model.test])}</div>
                 );
-            }else {
+            }else{
                 testList = (
                     <Nav bsStyle='pills' stacked>
                     {this.renderTests('testData')}
@@ -45,7 +45,8 @@ module.exports = React.createClass({
         );
     },
     renderTests(propName) {
-        return this.props.model[propName].map((prop)=>{
+        return Object.keys(this.props.model[propName]).map((key)=>{
+            var prop = this.props.model[propName][key];
             if (prop.env.toUpperCase() === this.props.model.env.toUpperCase()) {
                 return <NavItem href={"./" + prop.state} onClick={partial(this.goToTest, this.hrToEpoch(prop.timestamp))} key={prop.timestamp}>{prop.timestamp + " - " + prop.env + " - " + prop.state}</NavItem>;
             }

@@ -27,10 +27,6 @@ module.exports = {
         this.checkLoad(this.props.model.env, this.props.model.service, test);
     },
     checkLoad: function(env, service, test) {
-        if(!test) {
-            this.props.context.executeAction(actions.loadRecentTests);
-        }else{
-            this.props.context.executeAction(actions.loadTest, {env, service, test});
-        }
+        this.props.context.executeAction(actions.loadRecentTests, {env, service, test});
     }
 };
