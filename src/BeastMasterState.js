@@ -6,6 +6,12 @@ var config = require('./config');
 module.exports = State.extend({
     extraProperties: 'reject',
     props: {
+        env: {
+            'type': 'string',
+            'required': true,
+            'values': config.envs,
+            'default': config.envs[0]
+        },
         service: {
             'type': 'string',
             'required': false,
@@ -13,15 +19,23 @@ module.exports = State.extend({
         },
         test: {
             'type': 'string',
-            'required': false,
-            'values': config.tests
+            'required': false
         },
-        testData: 'string'
+        isLoading: {
+            'type': 'boolean',
+            'default': true
+        },
+        testData: {
+            'type': 'array',
+            'default': config.testData
+        }
     },
     toUrlString() {
-        if (this.service) {
-            return `/${this.service}/`;
+        if (this.service && this.test) {
+            return `/${this.env}/${this.service}/${this.test}`;
+        } else if (this.service) {
+            return `/${this.env}/${this.service}/`;
         }
-        return '/';
+        return `/${this.env}/`;
     }
 });

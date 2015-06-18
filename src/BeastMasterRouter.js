@@ -3,12 +3,12 @@
 var Router = require('ampersand-router');
 var BeastMasterStore = require('./BeastMasterStore');
 var config = require('./config');
-var BeastMasterActions = require('./actions/BeastMasterActions');
+var actions = require('./actions/BeastMasterActions');
 
 module.exports = Router.extend({
     routes: {
-        ':service(/:test)(/)' : 'goToUrl',
-        '' : 'goToUrl'
+        '(:env)(/)' : 'goToUrl',
+        ':env/:service(/:test)(/)' : 'goToUrl'
     },
     initialize(options) {
         options = options || {};
@@ -18,10 +18,16 @@ module.exports = Router.extend({
             this.navigate(store.getModel().toUrlString());
         })
     },
-    goToUrl(service, test) {
+    goToUrl(env, service, test) {
         var payload = {};
-        payload.service = service || '';
+        payload.env = env || config.envs[0];
+        payload.service = service || config.services[0];
         payload.test = test || '';
-        this.context.executeAction(BeastMasterActions.navigate, payload);
+        this.context.executeAction(actions.navigate, payload);
+        if(!test){
+            this.context.executeAction(actions.loadRecentTests);
+        }else{
+            this.context.executeAction(actions.loadTest, payload);
+        }
     }
 });

@@ -1,11 +1,11 @@
 'use strict';
 
 var {Fluxible} = require('fluxible');
-var BeastMasterMain = require('./components/BeastMasterMain');
+var BeastMasterWrapper = require('./components/BeastMasterWrapper');
 var BeastMasterStore = require('./BeastMasterStore');
 
 var app = new Fluxible({
-    component: BeastMasterMain
+    component: BeastMasterWrapper
 });
 
 app.registerStore(BeastMasterStore);

@@ -1,33 +1,32 @@
 'use strict';
 
 var React = require('react');
-var BeastMasterSidebar = require('./BeastMasterSidebar');
+var BeastMasterNavbar = require('./BeastMasterNavbar');
 var BeastMasterBody = require('./BeastMasterBody');
 var BeastMasterStore = require('../BeastMasterStore');
 var connectToStores = require('fluxible/addons/connectToStores');
-var BeastMasterMain;
+var BeastMasterWrapper;
 
-BeastMasterMain = React.createClass({
+BeastMasterWrapper = React.createClass({
     getInitialState: function() {
         return {
             sidebar: true
         };
     },
     render: function () {
-        var className = "beast-master-main-wrapper";
         return (
-            <div className={className} id="wrapper">
-                <BeastMasterSidebar {...this.props} />
+            <div id={"wrapper"}>
+                <BeastMasterNavbar {...this.props} />
                 <BeastMasterBody {...this.props} />
             </div>
         );
     }
 });
 
-BeastMasterMain = connectToStores(BeastMasterMain, [BeastMasterStore], function (stores) {
+BeastMasterWrapper = connectToStores(BeastMasterWrapper, [BeastMasterStore], function (stores) {
     return {
         model: stores.BeastMasterStore.getModel()
     };
 });
 
-module.exports = BeastMasterMain;
+module.exports = BeastMasterWrapper;

@@ -2,24 +2,53 @@
 
 var React = require('react');
 var config = require('../config');
+var {Nav, NavItem, Panel} = require('react-bootstrap');
+var linkConstructor = require('./mixins/linkConstructor');
+var timeConverter = require('./mixins/timeConverter');
+var partial = require('lodash.partial');
+var TestRunElement = require('./TestRunElement');
 
 module.exports = React.createClass({
+    mixins: [linkConstructor, timeConverter],
     render: function () {
-        var service = this.props.model.service ? this.props.model.service : 'home';
 
+        var service = this.props.model.service ? this.props.model.service : 'home';
+        var testList;
+        if(this.props.model.isLoading){
+            testList = "Loading...";
+        }else{
+            if(this.props.model.test){
+                testList = (
+                    <div>NO TEST DATA</div>
+                );
+            }else {
+                testList = (
+                    <Nav bsStyle='pills' stacked>
+                    {this.renderTests('testData')}
+                    </Nav>
+                );
+            }
+        }
         var pageContent = (
             <div className="row">
                 <div className="col-lg-12">
-                    <h1>{config.copy.title[service]}</h1>
                     <p>{config.copy.body[service]}</p>
+                    {testList}
                 </div>
             </div>);
         return (
-            <div className="beast-master-body-wrapper" id="page-content-wrapper">
+            <Panel header={config.copy.title[service]} className="beast-master-body-wrapper">
                 <div className="container-fluid">
                 {pageContent}
                 </div>
-            </div>
+            </Panel>
         );
+    },
+    renderTests(propName) {
+        return this.props.model[propName].map((prop)=>{
+            if (prop.env.toUpperCase() === this.props.model.env.toUpperCase()) {
+                return <NavItem href={"./" + prop.state} onClick={partial(this.goToTest, this.hrToEpoch(prop.timestamp))} key={prop.timestamp}>{prop.timestamp + " - " + prop.env + " - " + prop.state}</NavItem>;
+            }
+        });
     }
 });
