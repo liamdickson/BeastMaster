@@ -67,6 +67,7 @@ class BeastMasterStore extends BaseStore {
 BeastMasterStore.storeName = 'BeastMasterStore';
 BeastMasterStore.handlers = {
     'navigate' : 'set',
+    'set' : 'set',
     'loadRecentTests' : 'loadRecentTests',
     'loadTest' : 'loadTest',
     'loading': 'loading'

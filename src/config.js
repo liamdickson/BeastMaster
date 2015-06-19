@@ -15,8 +15,8 @@ module.exports = {
             mechagodzilla: 'MechaGodzilla'
         },
         body: {
-            mothra: 'Mothra results can be found below.',
-            mechagodzilla: 'MechaGodzilla results can be found below.'
+            mothra: '',
+            mechagodzilla: ''
         }
     },
     testData: function () {

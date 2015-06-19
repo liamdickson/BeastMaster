@@ -28,6 +28,10 @@ module.exports = State.extend({
         testData: {
             'type': 'object',
             'default': config.testData
+        },
+        hideAll: {
+            'type': 'boolean',
+            'default': false
         }
     },
     toUrlString() {

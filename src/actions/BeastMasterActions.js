@@ -8,5 +8,8 @@ module.exports = {
     },
     loadRecentTests(actionContext, payload) {
         actionContext.dispatch('loadRecentTests', payload);
+    },
+    setState(actionContext, payload) {
+        actionContext.dispatch('set', payload);
     }
 };
