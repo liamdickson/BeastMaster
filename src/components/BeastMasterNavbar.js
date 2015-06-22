@@ -16,9 +16,12 @@ module.exports = React.createClass({
                     <span className="navbar-brand">BeastMaster</span>
                 </div>
                 <Nav navbar right>
-                    {this.renderNav('services')}
+                    {this.renderNav('apps')}
                     <DropdownButton title={this.props.model.env} onSelect={this.goToEnv}>
                         {this.renderMenu('envs')}
+                    </DropdownButton>
+                    <DropdownButton title={this.props.model.service} onSelect={this.goToService}>
+                        {this.renderMenu('services')}
                     </DropdownButton>
                 </Nav>
             </Navbar>
@@ -26,7 +29,7 @@ module.exports = React.createClass({
     },
     renderNav(propName) {
         return config[propName].map((prop)=>{
-            return <NavItem key={prop} href={'./'+prop} onClick={partial(this.goToService,prop)}>{config.copy.title[prop]}</NavItem>
+            return <NavItem key={prop} href={'./'+prop} onClick={partial(this.goToApp,prop)}>{config.copy.title[prop]}</NavItem>
         })
     },
     renderMenu(propName) {

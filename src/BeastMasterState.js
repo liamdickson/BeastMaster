@@ -12,6 +12,11 @@ module.exports = State.extend({
             'values': config.envs,
             'default': config.envs[0]
         },
+        app: {
+            'type': 'string',
+            'required': false,
+            'values': config.apps
+        },
         service: {
             'type': 'string',
             'required': false,
@@ -19,7 +24,7 @@ module.exports = State.extend({
         },
         test: {
             'type': 'string',
-            'required': false
+            'default': ''
         },
         isLoading: {
             'type': 'boolean',
@@ -32,14 +37,20 @@ module.exports = State.extend({
         hideAll: {
             'type': 'boolean',
             'default': false
+        },
+        searchString: {
+            'type': 'string',
+            'default': ''
         }
     },
     toUrlString() {
-        if (this.service && this.test) {
-            return `/${this.env}/${this.service}/${this.test}`;
-        } else if (this.service) {
-            return `/${this.env}/${this.service}/`;
+        if (this.app && this.service && this.test) {
+            return `/${this.app}/${this.env}/${this.service}/${this.test}/`;
+        } else if (this.app && this.service) {
+            return `/${this.app}/${this.env}/${this.service}/`;
+        } else if (this.env) {
+            return `/${this.app}/${this.env}/`;
         }
-        return `/${this.env}/`;
+        return `/${this.app}/`;
     }
 });

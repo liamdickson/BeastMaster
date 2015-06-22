@@ -14,7 +14,7 @@ module.exports = React.createClass({
     render: function () {
         // As needed add additional logic for other test suites
         return (
-            this.props.model.service === 'mothra' ? <MothraTestPage {...this.props} /> : <span>Sorry, we can't parse this test type yet.</span>
+            this.props.model.app === 'mothra' ? <MothraTestPage {...this.props} /> : <span>Sorry, we can't parse this test type yet.</span>
         );
     }
 });

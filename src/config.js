@@ -1,13 +1,19 @@
 'use strict';
 
 module.exports = {
-    services: [
+    apps: [
         'mothra',
         'mechagodzilla'
     ],
     envs: [
-        'dev',
-        'qa'
+        'QA',
+        'DEV'
+    ],
+    services: [
+        'Ecom',
+        'Identity',
+        'Inventory',
+        'Logistics'
     ],
     copy: {
         title: {

@@ -7,8 +7,10 @@ var actions = require('./actions/BeastMasterActions');
 
 module.exports = Router.extend({
     routes: {
-        '(:env)(/)' : 'goToUrl',
-        ':env/:service(/:test)(/)' : 'goToUrl'
+        '(:app)(/)' : 'goToUrl',
+        ':app(/:env)(/)' : 'goToUrl',
+        ':app/:env(/:service)(/)' : 'goToUrl',
+        ':app/:env/:service(/:test)(/)' : 'goToUrl'
     },
     initialize(options) {
         options = options || {};
@@ -18,8 +20,9 @@ module.exports = Router.extend({
             this.navigate(store.getModel().toUrlString());
         })
     },
-    goToUrl(env, service, test) {
+    goToUrl(app, env, service, test) {
         var payload = {};
+        payload.app = app || config.apps[0];
         payload.env = env || config.envs[0];
         payload.service = service || config.services[0];
         payload.test = test || '';

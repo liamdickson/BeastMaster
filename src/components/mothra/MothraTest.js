@@ -27,14 +27,14 @@ module.exports = React.createClass({
     render: function () {
         var hideSteps = this.state.hideSteps;
         var topSpec = this.props.topSpec;
-        var testNum = this.props.testNum;
+        var displayNum = this.props.testNum + 1;
         var topClass = (hideSteps ? "inner-suites " : "") + "inner-suites-"+topSpec.state;
         var failures = topSpec.failures === 1 ? topSpec.failures+" failure" : topSpec.failures+" failures";
         return (
-            <div>
+            <div className={this.props.className}>
                 <div>
                     <h3 onClick={this.toggleSteps} className={"top-suite top-suite-"+topSpec.state}>
-                            {testNum+") "+topSpec.name+" ("+failures+")"}
+                            {displayNum+") "+topSpec.name+" ("+failures+")"}
                     </h3>
                     {topSpec.transactionIds.map((transactionObj)=>{
                         return this.renderOmtLink(transactionObj);

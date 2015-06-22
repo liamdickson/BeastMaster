@@ -11,7 +11,7 @@ var partial = require('lodash.partial');
 module.exports = React.createClass({
     mixins: [linkConstructor],
     render: function () {
-        var service = this.props.model.service;
+        var service = this.props.model.app;
         var bodyContent = "Loading...";
         if(!this.props.model.isLoading){
             bodyContent = this.props.model.test ? <TestPage {...this.props} /> : <TestList {...this.props} />;

@@ -2,7 +2,7 @@
 
 var BaseStore = require('fluxible/addons/BaseStore');
 var BeastMasterState = require('./BeastMasterState');
-var timeConverter = require('./components/mixins/timeConverter');
+var idConverter = require('./components/mixins/idConverter');
 var $ = require('jquery');
 
 class BeastMasterStore extends BaseStore {
@@ -30,7 +30,7 @@ class BeastMasterStore extends BaseStore {
             url: "/data/dev-output.json",
             async: true,
             success: (data)=>{
-                testData[timeConverter.hrToEpoch(data.timestamp)] = data;
+                testData[idConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });
@@ -38,7 +38,7 @@ class BeastMasterStore extends BaseStore {
             url: "/data/qa-output.json",
             async: true,
             success: (data)=>{
-                testData[timeConverter.hrToEpoch(data.timestamp)] = data;
+                testData[idConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });

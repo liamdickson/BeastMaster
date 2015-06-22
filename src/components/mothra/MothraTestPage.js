@@ -11,9 +11,13 @@ var MothraTestList = require('./MothraTestList');
 var actions = require('../../actions/BeastMasterActions.js');
 
 module.exports = React.createClass({
-    collapseAll: function () {
+    collapseAll: function (e) {
+        e.preventDefault();
         this.props.context.executeAction(actions.setState, {hideAll: true});
         this.props.context.executeAction(actions.setState, {hideAll: false});
+    },
+    search: function (e) {
+        this.props.context.executeAction(actions.setState, {searchString: e.target.value});
     },
     render: function () {
         var test = this.props.model.testData[this.props.model.test];
@@ -31,7 +35,7 @@ module.exports = React.createClass({
                     {testAlert}
                 </div>
                 <div className="search-box-wrapper">
-                    Search: <input className="search-box" type="text" /> //TODO: Implement Search
+                    Search: <input onChange={this.search} className="search-box" type="text" />
                 </div>
                 <div className="results">
                     <div className="controls">
