@@ -30,9 +30,12 @@ module.exports = State.extend({
             'type': 'boolean',
             'default': true
         },
-        testData: {
+        testDataSet: {
             'type': 'object',
-            'default': config.testData
+            'default': config.emptyObject
+        },
+        testData: {
+            'type': 'object'
         },
         hideAll: {
             'type': 'boolean',
@@ -41,6 +44,9 @@ module.exports = State.extend({
         searchString: {
             'type': 'string',
             'default': ''
+        },
+        error: {
+            'type': 'string'
         }
     },
     toUrlString() {

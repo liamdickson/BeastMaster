@@ -17,13 +17,17 @@ module.exports = React.createClass({
         return true;
     },
     render: function () {
-        var test = this.props.model.testData[this.props.model.test];
-        return (
-            <div className="summary">
-                {test.tests.map((subTest, i)=>{
+        var test = this.props.model.testData;
+        if(test.tests) {
+            return (
+                <div className="summary">
+                {test.tests.map((subTest, i)=> {
                     return <MothraTest key={subTest.name} className={this.search(subTest) ? "" : "isHidden"} topSpec={subTest} testNum={i} {...this.props} />
                 })}
-            </div>
-        );
+                </div>
+            );
+        }else{
+            return <div className="summary">Test Data Corrupted</div>
+        }
     }
 });

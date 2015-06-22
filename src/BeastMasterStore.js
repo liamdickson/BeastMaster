@@ -3,6 +3,7 @@
 var BaseStore = require('fluxible/addons/BaseStore');
 var BeastMasterState = require('./BeastMasterState');
 var idConverter = require('./components/mixins/idConverter');
+var config = require('./config.js');
 var $ = require('jquery');
 
 class BeastMasterStore extends BaseStore {
@@ -16,21 +17,34 @@ class BeastMasterStore extends BaseStore {
         return this.model;
     }
 
-    loading() {
-        this.model.set('isLoading', true);
+    loading(bool) {
+        this.model.set('isLoading', bool);
     }
 
-    loadRecentTests(payload) {
-        var loadAll;
+    loadTest() {
+        var getURL = config.esUrl + 'external/' + this.model.env + '-' + this.model.service + '-' + this.model.test;
         this.loading();
-        this.model.set({testData: {}});
-        var testData = {};
+        $.get(getURL, (result)=>{
+            this.model.set({testData: result._source});
+            this.loading(false);
+        }).fail(()=>{
+            this.model.set({testData: null});
+            this.model.set({error: 'ERROR: \"' + getURL + '\" not found.'});
+            this.loading(false);
+        });
+    }
+
+    loadRecentTests() {
+        var loadAll;
+        this.loading(true);
+        this.model.set({testDataSet: {}});
+        var testDataSet = {};
 
         $.ajax({
             url: "/data/dev-output.json",
             async: true,
             success: (data)=>{
-                testData[idConverter.hrToEpoch(data.timestamp)] = data;
+                testDataSet[idConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });
@@ -38,18 +52,16 @@ class BeastMasterStore extends BaseStore {
             url: "/data/qa-output.json",
             async: true,
             success: (data)=>{
-                testData[idConverter.hrToEpoch(data.timestamp)] = data;
+                testDataSet[idConverter.hrToEpoch(data.timestamp)] = data;
                 loadAll();
             }
         });
 
         loadAll = ()=>{
-            if(Object.keys(testData).length === 2) {
-                this.model.set({testData});
-                if(payload.test){
-                    this.model.set('test', payload.test);
-                }
-                this.model.set('isLoading', false);
+            if(Object.keys(testDataSet).length === 2) {
+
+                this.model.set({testDataSet});
+                this.loading(false);
             }
         };
     }

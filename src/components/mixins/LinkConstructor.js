@@ -10,14 +10,14 @@ module.exports = {
             e.preventDefault();
         }
         this.props.context.executeAction(actions.navigate, {app, test: ''});
-        this.checkLoad(app, this.props.model.env, '', '');
+        this.checkLoad(app, this.props.model.env, this.props.model.service, '');
     },
     goToEnv: function(env, e) {
         if(e) {
             e.preventDefault();
         }
         this.props.context.executeAction(actions.navigate, {env, test: ''});
-        this.checkLoad(this.props.model.app, env, '', '');
+        this.checkLoad(this.props.model.app, env, this.props.model.service, '');
     },
     goToService: function(service, e) {
         if(e) {
@@ -34,6 +34,11 @@ module.exports = {
         this.checkLoad(this.props.model.app, this.props.model.env, this.props.model.service, test);
     },
     checkLoad: function(app, env, service, test) {
-        this.props.context.executeAction(actions.loadRecentTests, {app, env, service, test});
+        if(env) {
+            this.props.context.executeAction(actions.loadRecentTests, {app, env, service, test});
+        }
+        if(test){
+            this.props.context.executeAction(actions.loadTest, {app, env, service, test});
+        }
     }
 };

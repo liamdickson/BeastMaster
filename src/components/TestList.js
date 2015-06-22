@@ -17,7 +17,7 @@ module.exports = React.createClass({
     render: function () {
         return (
             <Nav bsStyle='pills' stacked>
-                {this.renderTests('testData')}
+                {this.renderTests('testDataSet')}
             </Nav>
         );
     },
