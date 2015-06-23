@@ -7,7 +7,7 @@
 'use strict';
 
 var React = require('react');
-var MothraTestList = require('./MothraTestList');
+var MothraTestGroup = require('./MothraTestGroup');
 var actions = require('../../actions/BeastMasterActions');
 
 module.exports = React.createClass({
@@ -45,7 +45,7 @@ module.exports = React.createClass({
                     <div className="controls">
                         <a onClick={this.collapseAll} href="#" className="collapse-all">Collapse All</a>
                     </div>
-                    <MothraTestList {...this.props} />
+                    <MothraTestGroup {...this.props} />
                 </div>
                 <div className="pic">
                     {testImage}

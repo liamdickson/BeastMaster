@@ -25,6 +25,6 @@ module.exports = {
             mechagodzilla: ''
         }
     },
-    emptyObject: ()=>{return {};},
+    emptyObject: function () {return {};},
     esUrl: 'http://jalapeno:9200/mothra-test/'
 };

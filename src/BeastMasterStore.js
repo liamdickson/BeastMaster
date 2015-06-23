@@ -27,7 +27,8 @@ class BeastMasterStore extends BaseStore {
         $.get(getURL, (result)=>{
             this.model.set({testData: result._source});
             this.loading(false);
-        }).fail(()=>{
+        }).fail((error)=>{
+            console.log(error);
             this.model.set({testData: null});
             this.model.set({error: 'ERROR: \"' + getURL + '\" not found.'});
             this.loading(false);
@@ -39,31 +40,36 @@ class BeastMasterStore extends BaseStore {
         this.loading(true);
         this.model.set({testDataSet: {}});
         var testDataSet = {};
-
-        $.ajax({
-            url: "/data/dev-output.json",
-            async: true,
-            success: (data)=>{
-                testDataSet[idConverter.hrToEpoch(data.timestamp)] = data;
-                loadAll();
+        var query = {
+            fields : [ "timestamp", "service", "env", "state" ],
+            query : {
+                bool: {
+                    must: [
+                        { term: { env : this.model.env } },
+                        { term: { service : this.model.service } }
+                    ]
+                }
             }
-        });
+        };
         $.ajax({
-            url: "/data/qa-output.json",
-            async: true,
+            type: "POST",
+            url: config.esUrl + "_search",
+            contentType: 'application/json',
+            data: JSON.stringify(query),
+            dataType: "json",
             success: (data)=>{
-                testDataSet[idConverter.hrToEpoch(data.timestamp)] = data;
-                loadAll();
-            }
-        });
-
-        loadAll = ()=>{
-            if(Object.keys(testDataSet).length === 2) {
-
+                data.hits.hits.forEach((hit)=>{
+                    testDataSet[idConverter.hrToEpoch(hit.fields.timestamp[0])] = {
+                        env: hit.fields.env[0],
+                        service: hit.fields.service[0],
+                        state: hit.fields.state[0],
+                        timestamp: hit.fields.timestamp[0]
+                    }
+                });
                 this.model.set({testDataSet});
                 this.loading(false);
             }
-        };
+        });
     }
 
     set(payload) {

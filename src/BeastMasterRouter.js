@@ -7,7 +7,7 @@ var actions = require('./actions/BeastMasterActions');
 
 module.exports = Router.extend({
     routes: {
-        '(:app)(/)' : 'goToUrl',
+        '(:app)(/)' : 'getTestList',
         ':app/:env(/:service)(/)' : 'getTestList',
         ':app/:env/:service/:test(/)' : 'getTest'
     },
