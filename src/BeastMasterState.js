@@ -6,21 +6,21 @@ var config = require('./config');
 module.exports = State.extend({
     extraProperties: 'reject',
     props: {
-        env: {
-            'type': 'string',
-            'required': true,
-            'values': config.envs,
-            'default': config.envs[0]
-        },
         app: {
             'type': 'string',
+            'required': true,
+            'values': config.apps,
+            'default': config.apps[0]
+        },
+        env: {
+            'type': 'string',
             'required': false,
-            'values': config.apps
+            'values': config.getEnvs()
         },
         service: {
             'type': 'string',
             'required': false,
-            'values': config.services
+            'values': config.getServices()
         },
         test: {
             'type': 'string',

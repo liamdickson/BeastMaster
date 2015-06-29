@@ -21,10 +21,6 @@ module.exports = React.createClass({
     },
     render: function () {
         var test = this.props.model.testData;
-        if(!test){
-            var error = this.props.model.error;
-            return <div id="HTMLReporter"><span className="failingAlert bar">Test Not Found. {error}</span></div>
-        }
         var testAlertData = <span>{test.failures} failed | {test.passes} passed | took {test.duration}</span>;
         var testAlert = test.failures ? <span className="failingAlert bar">Mothra Wins! ({testAlertData})</span>:
             <span className="passingAlert bar">{test.service} Wins! ({testAlertData})</span>;

@@ -17,10 +17,10 @@ module.exports = React.createClass({
                 </div>
                 <Nav navbar right>
                     {this.renderNav('apps')}
-                    <DropdownButton title={this.props.model.env} onSelect={this.goToEnv}>
+                    <DropdownButton key='envs' title={this.props.model.env} onSelect={this.goToEnv}>
                         {this.renderMenu('envs')}
                     </DropdownButton>
-                    <DropdownButton title={this.props.model.service} onSelect={this.goToService}>
+                    <DropdownButton key='services' title={this.props.model.service} onSelect={this.goToService}>
                         {this.renderMenu('services')}
                     </DropdownButton>
                 </Nav>
@@ -33,7 +33,7 @@ module.exports = React.createClass({
         })
     },
     renderMenu(propName) {
-        return config[propName].map(function (prop) {
+        return config[propName][this.props.model.app].map(function (prop) {
             return <MenuItem key={prop} eventKey={prop}>{prop}</MenuItem>
         });
     }
