@@ -8,13 +8,14 @@
 
 var React = require('react');
 var MothraTestList = require('./mothra/MothraTestList');
+var {Alert} = require('react-bootstrap');
 
 module.exports = React.createClass({
     render: function () {
         if(this.props.model.app === 'mothra') {
             return <MothraTestList {...this.props} />
         }else{
-            return <span>Sorry, we don't have this app implemented yet.</span>;
+            return <Alert bsStyle='danger'>App "{this.props.model.app}" not supported.</Alert>;
         }
     }
 });

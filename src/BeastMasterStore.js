@@ -22,7 +22,17 @@ class BeastMasterStore extends BaseStore {
     }
 
     loadTest() {
-        this.loading();
+        if(this.model.app == 'mothra'){
+            this.loadMothraTest();
+        }else if(this.model.app == 'mechagodzilla'){
+            this.loadMechagodzillaTest();
+        }else{
+            this.setTestError('App \"' + this.model.app + '\" not supported.');
+        }
+    }
+
+    loadMothraTest() {
+        this.loading(true);
         var query = {
             query : {
                 ids : {
@@ -47,17 +57,31 @@ class BeastMasterStore extends BaseStore {
             },
             error: (jqXHR, textStatus, error)=>{
                 this.setTestError(error);
-                this.loading(false);
             }
         });
+    }
+
+    loadMechagodzillaTest() {
+        this.setTestError('App \"' + this.model.app + '\" not supported.');
     }
 
     setTestError(error) {
         this.model.set({testData: null});
         this.model.set({error: error});
+        this.loading(false);
     }
 
     loadRecentTests() {
+        if(this.model.app == 'mothra'){
+            this.loadRecentMothraTests();
+        }else if(this.model.app == 'mechagodzilla'){
+            this.loadRecentMechagodzillaTests();
+        }else{
+            this.setTestError('App \"' + this.model.app + '\" not supported.');
+        }
+    }
+
+    loadRecentMothraTests() {
         var loadAll;
         this.loading(true);
         this.model.set({testDataSet: {}});
@@ -90,17 +114,19 @@ class BeastMasterStore extends BaseStore {
                 });
                 this.model.set({testDataSet});
                 this.loading(false);
+            },
+            error: (jqXHR, textStatus, error)=>{
+                this.setTestError(error);
             }
         });
     }
 
-    set(payload) {
-        this.model.set(payload);
+    loadRecentMechagodzillaTests() {
+        this.setTestError('App \"' + this.model.app + '\" not supported.');
     }
 
-    getUrlForProps(props) {
-        var model = new BeastMasterState(props);
-        return model.toUrlString();
+    set(payload) {
+        this.model.set(payload);
     }
 }
 
