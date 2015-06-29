@@ -22,16 +22,33 @@ class BeastMasterStore extends BaseStore {
     }
 
     loadTest() {
-        var getURL = config.esUrl + 'external/' + this.model.env + '-' + this.model.service + '-' + this.model.test;
+        //var getURL = config.esUrl + 'external/' + this.model.env + '-' + this.model.service + '-' + this.model.test;
         this.loading();
-        $.get(getURL, (result)=>{
-            this.model.set({testData: result._source});
-            this.loading(false);
-        }).fail((error)=>{
-            console.log(error);
-            this.model.set({testData: null});
-            this.model.set({error: 'ERROR: \"' + getURL + '\" not found.'});
-            this.loading(false);
+
+        var query = {
+            query : {
+                ids : {
+                    type : "external",
+                    values : [this.model.env + '-' + this.model.service + '-' + this.model.test]
+                }
+            }
+        };
+        $.ajax({
+            type: "POST",
+            url: config.esUrl + "_search",
+            contentType: 'application/json',
+            data: JSON.stringify(query),
+            dataType: "json",
+            success: (result)=>{
+                this.model.set({testData: result.hits.hits[0]._source});
+                this.loading(false);
+            },
+            error: (jqXHR, textStatus, error)=>{
+                console.log(error);
+                this.model.set({testData: null});
+                this.model.set({error: 'ERROR: \"' + getURL + '\" not found.'});
+                this.loading(false);
+            }
         });
     }
 

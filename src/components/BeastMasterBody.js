@@ -18,7 +18,6 @@ module.exports = React.createClass({
         }
         var pageContent = (
             <div className="col-lg-12">
-                <div>{config.copy.body[service]}</div>
                 {bodyContent}
             </div>
         );

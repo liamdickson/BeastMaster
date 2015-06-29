@@ -26,8 +26,8 @@ module.exports = React.createClass({
             return <div id="HTMLReporter"><span className="failingAlert bar">Test Not Found. {error}</span></div>
         }
         var testAlertData = <span>{test.failures} failed | {test.passes} passed | took {test.duration}</span>;
-        var testAlert = test.failures ? <span className="failingAlert bar">Mothra Wins! {testAlertData}</span>:
-            <span className="passingAlert bar">{test.service} Wins!{testAlertData}</span>;
+        var testAlert = test.failures ? <span className="failingAlert bar">Mothra Wins! ({testAlertData})</span>:
+            <span className="passingAlert bar">{test.service} Wins! ({testAlertData})</span>;
         var testImage = test.failures ? <img src="/images/mothra-win.jpg" /> : <img src="/images/mothra-die.gif" />;
         return (
             <div id="HTMLReporter">
