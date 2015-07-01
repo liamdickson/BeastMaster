@@ -9,6 +9,7 @@
 var React = require('react');
 var config = require('../config');
 var MothraTestPage = require('./mothra/MothraTestPage');
+var MechaTestPage = require('./mechagodzilla/MechaTestPage');
 var {Alert} = require('react-bootstrap');
 
 module.exports = React.createClass({
@@ -18,8 +19,12 @@ module.exports = React.createClass({
             var error = this.props.model.error;
             return <Alert bsStyle='danger'>{error}</Alert>
         }
-        return (
-            this.props.model.app === 'mothra' ? <MothraTestPage {...this.props} /> : <span>Sorry, we can't parse this test type yet.</span>
-        );
+        var testPage = <span>Sorry, we can't parse this test type yet.</span>;
+        if(this.props.model.app === 'mothra'){
+            testPage = <MothraTestPage {...this.props} />;
+        }else if(this.props.model.app === 'mechagodzilla'){
+            testPage = <MechaTestPage {...this.props} />;
+        }
+        return testPage;
     }
 });
