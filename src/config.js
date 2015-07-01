@@ -4,19 +4,12 @@ var _ = require('underscore');
 
 module.exports = {
     apps: [
-        'mothra',
-        'mechagodzilla'
+        'mothra'
     ],
     envs: {
         mothra: [
             'QA',
             'DEV'
-        ],
-        mechagodzilla: [
-            'QA',
-            'Prod',
-            'Stage',
-            'Custom Server'
         ]
     },
     getEnvs: function () {
@@ -32,15 +25,6 @@ module.exports = {
             'Identity',
             'Inventory',
             'Logistics'
-        ],
-        mechagodzilla: [
-            'Account',
-            'MessageCenter',
-            'Login',
-            'PDP',
-            'Register',
-            'Checkout',
-            'Redirect'
         ]
     },
     getServices: function () {
@@ -52,12 +36,10 @@ module.exports = {
     },
     copy: {
         title: {
-            mothra: 'Mothra',
-            mechagodzilla: 'MechaGodzilla'
+            mothra: 'Mothra'
         },
         body: {
-            mothra: '',
-            mechagodzilla: ''
+            mothra: ''
         }
     },
     emptyObject: function () {return {};},
