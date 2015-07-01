@@ -29,13 +29,13 @@ module.exports = Router.extend({
     },
     goToUrl(app, env, service, test) {
         var payload = {};
+        payload.app = app = app || config.apps[0];
         if(config.envs[app].indexOf(env) === -1){
             env = config.envs[app][0];
         }
         if(config.services[app].indexOf(service) === -1){
             service = config.services[app][0];
         }
-        payload.app = app || config.apps[0];
         payload.env = env;
         payload.service = service;
         payload.test = test || '';
