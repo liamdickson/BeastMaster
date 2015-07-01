@@ -18,7 +18,7 @@ module.exports = React.createClass({
             <div key={midSpecName} className={"suite "+midSpec.state}>
                 <span className="description">{midSpecName}</span>
             {_.map(midSpec.tests, (spec, specName)=>{
-                return <MothraTestStepSpec spec={spec} specName={specName} />;
+                return <MothraTestStepSpec key={specName} spec={spec} specName={specName} />;
             })}
             </div>
         );

@@ -27,7 +27,7 @@ module.exports = React.createClass({
         }
         var metaData = (this.props.spec.metadata && this.props.spec.metadata.serviceCall) ? <div className="metadata"><div className="resultMessage">{this.props.spec.metadata.serviceCall}</div></div> : "" ;
         return (
-            <div key={this.props.specName} className={"specSummary "+this.props.spec.state}>
+            <div className={"specSummary "+this.props.spec.state}>
                 <span className="description" onClick={this.toggleTrace}>{this.props.specName}</span>
                 {stackTrace}
                 {metaData}
