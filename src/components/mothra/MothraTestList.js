@@ -16,14 +16,16 @@ var idConverter = require('../mixins/idConverter');
 module.exports = React.createClass({
     mixins: [linkConstructor, idConverter],
     render: function () {
+        var testList = <div>There are no tests of this type.</div>;
+        if(Object.keys(this.props.model['testDataSet']).length !== 0){
+            testList = Object.keys(this.props.model['testDataSet']).map((key)=>{
+                var prop = this.props.model['testDataSet'][key];
+                return <NavItem href={"./" + prop.state} onClick={partial(this.goToTest, this.hrToEpoch(prop.timestamp))} key={prop.timestamp}>{prop.timestamp + " - " + prop.env + " - " + prop.service + " - " + prop.state}</NavItem>;
+            })
+        }
         return (
             <Nav bsStyle='pills' stacked>
-                {Object.keys(this.props.model['testDataSet']).map((key)=>{
-                    var prop = this.props.model['testDataSet'][key];
-                    if (prop.env.toUpperCase() === this.props.model.env.toUpperCase() && prop.service.toUpperCase() === this.props.model.service.toUpperCase()) {
-                        return <NavItem href={"./" + prop.state} onClick={partial(this.goToTest, this.hrToEpoch(prop.timestamp))} key={prop.timestamp}>{prop.timestamp + " - " + prop.env + " - " + prop.service + " - " + prop.state}</NavItem>;
-                    }
-                })}
+                {testList}
             </Nav>
         );
     }

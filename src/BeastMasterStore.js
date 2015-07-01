@@ -91,8 +91,8 @@ class BeastMasterStore extends BaseStore {
             query : {
                 bool: {
                     must: [
-                        { term: { env : this.model.env } },
-                        { term: { service : this.model.service } }
+                        { match: { env : this.model.env } },
+                        { match: { service : this.model.service } }
                     ]
                 }
             }
