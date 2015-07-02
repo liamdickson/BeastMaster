@@ -8,11 +8,6 @@ var connectToStores = require('fluxible/addons/connectToStores');
 var BeastMasterWrapper;
 
 BeastMasterWrapper = React.createClass({
-    getInitialState: function() {
-        return {
-            sidebar: true
-        };
-    },
     render: function () {
         return (
             <div id={"wrapper"}>
