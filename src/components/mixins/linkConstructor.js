@@ -43,11 +43,10 @@ module.exports = {
         this.checkLoad(this.props.model.app, this.props.model.env, this.props.model.service, test);
     },
     checkLoad: function(app, env, service, test) {
-        if(env) {
-            this.props.context.executeAction(actions.loadRecentTests, {app, env, service, test});
-        }
         if(test){
             this.props.context.executeAction(actions.loadTest, {app, env, service, test});
+        }else if(env) {
+            this.props.context.executeAction(actions.loadRecentTests, {app, env, service, test});
         }
     }
 };

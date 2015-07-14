@@ -16,16 +16,13 @@ module.exports = React.createClass({
         if(!this.props.model.isLoading){
             bodyContent = this.props.model.test ? <TestPage {...this.props} /> : <TestList {...this.props} />;
         }
-        var pageContent = (
-            <div className="col-lg-12">
-                {bodyContent}
-            </div>
-        );
         return (
             <Panel header={config.copy.title[service]} className="beast-master-body-wrapper">
                 <div className="container-fluid">
                     <div className="row">
-                        {pageContent}
+                        <div className="col-lg-12">
+                            {bodyContent}
+                        </div>
                     </div>
                 </div>
             </Panel>
