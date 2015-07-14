@@ -18,7 +18,13 @@ class BeastMasterStore extends BaseStore {
     }
 
     loading(bool) {
-        this.model.set('isLoading', bool);
+        var loadingVal = this.model.get('loadingVal');
+        loadingVal += bool ? 1 : -1;
+        if(loadingVal <= 0) {
+            this.model.set({isLoading: false, loadingVal: loadingVal});
+        }else{
+            this.model.set({isLoading: true, loadingVal: loadingVal});
+        }
     }
 
     loadTest() {
