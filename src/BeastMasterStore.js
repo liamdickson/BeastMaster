@@ -93,6 +93,7 @@ class BeastMasterStore extends BaseStore {
         this.model.set({testDataSet: {}});
         var testDataSet = {};
         var query = {
+            from : 0, size : 30,
             fields : [ "timestamp", "service", "env", "state" ],
             query : {
                 bool: {
