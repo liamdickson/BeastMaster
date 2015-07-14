@@ -30,6 +30,10 @@ module.exports = State.extend({
             'type': 'boolean',
             'default': true
         },
+        loadingVal: {
+            'type': 'number',
+            'default': 0
+        },
         testDataSet: {
             'type': 'object',
             'default': config.emptyObject
