@@ -9,6 +9,7 @@ module.exports = Router.extend({
     routes: {
         '(:app)(/)' : 'getTestList',
         ':app/:env(/:service)(/)' : 'getTestList',
+        ':app/:env/:service/page/:num(/)' : 'getTestList',
         ':app/:env/:service/:test(/)' : 'getTest'
     },
     initialize(options) {
@@ -19,26 +20,21 @@ module.exports = Router.extend({
             this.navigate(store.getModel().toUrlString());
         })
     },
-    getTestList(app, env, service, test) {
-        this.goToUrl(app, env, service, test);
-        this.context.executeAction(actions.loadRecentTests);
+    getTestList(app, env, service, page) {
+        this.goToUrl(app, env, service, null, page);
+        this.context.executeAction(actions.loadRecentTests, {app, env, service, page});
     },
     getTest(app, env, service, test) {
         this.goToUrl(app, env, service, test);
-        this.context.executeAction(actions.loadTest);
+        this.context.executeAction(actions.loadTest, {app, env, service, test});
     },
-    goToUrl(app, env, service, test) {
+    goToUrl(app, env, service, test, page) {
         var payload = {};
         payload.app = app = app || config.apps[0];
-        if(config.envs[app].indexOf(env) === -1){
-            env = config.envs[app][0];
-        }
-        if(config.services[app].indexOf(service) === -1){
-            service = config.services[app][0];
-        }
-        payload.env = env;
-        payload.service = service;
-        payload.test = test || '';
+        payload.env = env || config.defaultEnv;
+        payload.service = service || config.defaultService;
+        payload.test = test;
+        payload.page = page;
         this.context.executeAction(actions.navigate, payload);
     }
 });

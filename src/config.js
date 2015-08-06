@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 
-module.exports = {
+var config = module.exports = {
     apps: [
         'mothra'
     ],
@@ -14,11 +14,13 @@ module.exports = {
     },
     getEnvs: function () {
         var envs = [];
-        _.forEach(this.envs, function (envList, app) {
+        _.forEach(this.envs, function (envList) {
             envs = envs.concat(envList);
         });
+        envs.push(config.defaultEnv);
         return envs;
     },
+    defaultEnv: 'All',
     services: {
         mothra: [
             'Ecom',
@@ -29,19 +31,19 @@ module.exports = {
     },
     getServices: function () {
         var services = [];
-        _.forEach(this.services, function (serviceList, app) {
+        _.forEach(this.services, function (serviceList) {
             services = services.concat(serviceList);
         });
+        services.push(config.defaultService);
         return services;
     },
+    defaultService: 'All',
     copy: {
         title: {
             mothra: 'Mothra'
-        },
-        body: {
-            mothra: ''
         }
     },
     emptyObject: function () {return {};},
-    esUrl: 'http://jalapeno:9200/mothra-*/'
+    esUrl: 'http://elastic.intranet.1stdibs.com:9200/mothra-*/',
+    pageSize: 10
 };

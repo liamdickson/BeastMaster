@@ -27,23 +27,24 @@ class BeastMasterStore extends BaseStore {
         }
     }
 
-    loadTest() {
-        if(this.model.app == 'mothra'){
-            this.loadMothraTest();
-        }else if(this.model.app == 'mechagodzilla'){
-            this.loadMechagodzillaTest();
+    loadTest(payload) {
+        if(payload.app === 'mothra'){
+            this.loadMothraTest(payload);
         }else{
-            this.setTestError('App \"' + this.model.app + '\" not supported.');
+            this.setTestError('App \"' + payload.app + '\" not supported.');
         }
     }
 
-    loadMothraTest() {
+    loadMothraTest(payload) {
+        var env = payload.env || this.model.env;
+        var service = payload.service || this.model.service;
+        var test = payload.test || this.model.test;
         this.loading(true);
         var query = {
             query : {
                 ids : {
                     type : "external",
-                    values : [this.model.env + '-' + this.model.service + '-' + this.model.test]
+                    values : [env + '-' + service + '-' + test]
                 }
             }
         };
@@ -57,7 +58,7 @@ class BeastMasterStore extends BaseStore {
                 if(result.hits.total) {
                     this.model.set({testData: result.hits.hits[0]._source});
                 }else{
-                    this.setTestError('Test \"' + this.model.test + '\" not found.');
+                    this.setTestError('Test \"' + test + '\" not found.');
                 }
                 this.loading(false);
             },
@@ -67,40 +68,43 @@ class BeastMasterStore extends BaseStore {
         });
     }
 
-    loadMechagodzillaTest() {
-        this.setTestError('App \"' + this.model.app + '\" not supported.');
-    }
-
     setTestError(error) {
         this.model.set({testData: null});
         this.model.set({error: error});
         this.loading(false);
     }
 
-    loadRecentTests() {
-        if(this.model.app == 'mothra'){
-            this.loadRecentMothraTests();
-        }else if(this.model.app == 'mechagodzilla'){
-            this.loadRecentMechagodzillaTests();
+    loadRecentTests(payload) {
+        if(payload.app == 'mothra'){
+            this.loadRecentMothraTests(payload);
         }else{
-            this.setTestError('App \"' + this.model.app + '\" not supported.');
+            this.setTestError('App \"' + payload.app + '\" not supported.');
         }
     }
 
-    loadRecentMothraTests() {
-        var loadAll;
+    loadRecentMothraTests(payload) {
+        var testDataSet = {};
+        var query;
+        var mustArray = [];
+        var pageSize = config.pageSize;
+        var env = payload.env || this.model.env;
+        var service = payload.service || this.model.service;
+        var page = payload.page;
         this.loading(true);
         this.model.set({testDataSet: {}});
-        var testDataSet = {};
-        var query = {
-            from : 0, size : 30,
-            fields : [ "timestamp", "service", "env", "state" ],
+        if (env !== config.defaultEnv) {
+            mustArray.push({ match: {env} });
+        }
+        if (service !== config.defaultService) {
+            mustArray.push({ match: {service} });
+        }
+        query = {
+            size: pageSize, from: page * pageSize,
+            sort: [ { "_timestamp": "desc" } ],
+            fields : ["_timestamp", "timestamp", "service", "env", "state" ],
             query : {
                 bool: {
-                    must: [
-                        { match: { env : this.model.env } },
-                        { match: { service : this.model.service } }
-                    ]
+                    must: mustArray
                 }
             }
         };
@@ -126,10 +130,6 @@ class BeastMasterStore extends BaseStore {
                 this.setTestError(error);
             }
         });
-    }
-
-    loadRecentMechagodzillaTests() {
-        this.setTestError('App \"' + this.model.app + '\" not supported.');
     }
 
     set(payload) {

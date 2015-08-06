@@ -22,6 +22,9 @@ module.exports = State.extend({
             'required': false,
             'values': config.getServices()
         },
+        page: {
+            'required': false
+        },
         test: {
             'type': 'string',
             'default': ''
@@ -54,9 +57,11 @@ module.exports = State.extend({
         }
     },
     toUrlString() {
-        if (this.app && this.service && this.test) {
+        if (this.test) {
             return `/${this.app}/${this.env}/${this.service}/${this.test}/`;
-        } else if (this.app && this.service) {
+        } else if (this.page){
+            return `/${this.app}/${this.env}/${this.service}/page/${this.page}`;
+        } else if (this.service) {
             return `/${this.app}/${this.env}/${this.service}/`;
         } else if (this.env) {
             return `/${this.app}/${this.env}/`;

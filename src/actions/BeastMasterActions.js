@@ -4,11 +4,11 @@ module.exports = {
     navigate(actionContext, payload) {
         actionContext.dispatch('navigate', payload);
     },
-    loadRecentTests(actionContext) {
-        actionContext.dispatch('loadRecentTests');
+    loadRecentTests(actionContext, payload) {
+        actionContext.dispatch('loadRecentTests', payload);
     },
-    loadTest(actionContext) {
-        actionContext.dispatch('loadTest');
+    loadTest(actionContext, payload) {
+        actionContext.dispatch('loadTest', payload);
     },
     setState(actionContext, payload) {
         actionContext.dispatch('set', payload);

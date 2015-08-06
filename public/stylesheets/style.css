@@ -13,3 +13,7 @@
 .isHidden {
     display: none;
 }
+
+.inline-margin {
+    margin-left: 5px;
+}

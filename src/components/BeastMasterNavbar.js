@@ -16,25 +16,35 @@ module.exports = React.createClass({
                     <span className="navbar-brand">BeastMaster</span>
                 </div>
                 <Nav navbar right>
-                    {this.renderNav('apps')}
-                    <DropdownButton key='envs' title={this.props.model.env} onSelect={this.goToEnv}>
-                        {this.renderMenu('envs')}
+                    {this.renderApps('apps')}
+                    <DropdownButton key='envs' title={this.props.model.env} onSelect={this.goToURL}>
+                        <MenuItem key={config.defaultEnv} eventKey={{env: config.defaultEnv, service: this.props.model.service}}>
+                            {config.defaultEnv}
+                        </MenuItem>
+                        {this.renderEnvs('envs')}
                     </DropdownButton>
-                    <DropdownButton key='services' title={this.props.model.service} onSelect={this.goToService}>
-                        {this.renderMenu('services')}
-                    </DropdownButton>
+                    {this.renderServices('services')}
                 </Nav>
             </Navbar>
         );
     },
-    renderNav(propName) {
+    renderApps(propName) {
         return config[propName].map((prop)=>{
-            return <NavItem key={prop} href={'./'+prop} onClick={partial(this.goToApp,prop)}>{config.copy.title[prop]}</NavItem>
+            return <NavItem key={prop} href={'./'+prop}
+                            onClick={partial(this.goToURL,{app: prop})}>{config.copy.title[prop]}</NavItem>
         })
     },
-    renderMenu(propName) {
-        return config[propName][this.props.model.app].map(function (prop) {
-            return <MenuItem key={prop} eventKey={prop}>{prop}</MenuItem>
+    renderEnvs(propName) {
+        return config[propName][this.props.model.app].map((prop)=>{
+            return <MenuItem key={prop} eventKey={{env: prop, service: this.props.model.service}}>{prop}</MenuItem>
+        });
+    },
+    renderServices(propName) {
+        return config[propName][this.props.model.app].map((prop)=>{
+            var linkVal = this.props.model.service === prop ? false : prop;
+            return <MenuItem className={ linkVal ? '' : 'open'}
+                             onSelect={partial(this.goToURL,{env: this.props.model.env, service: linkVal})}
+                             key={prop}>{prop}</MenuItem>
         });
     }
 });
