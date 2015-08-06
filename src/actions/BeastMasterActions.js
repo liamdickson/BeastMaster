@@ -4,6 +4,9 @@ module.exports = {
     navigate(actionContext, payload) {
         actionContext.dispatch('navigate', payload);
     },
+    loadEnvs(actionContext) {
+        actionContext.dispatch('loadEnvs');
+    },
     loadRecentTests(actionContext, payload) {
         actionContext.dispatch('loadRecentTests', payload);
     },

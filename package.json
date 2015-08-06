@@ -22,7 +22,9 @@
     "debug": "~2.1.1",
     "express": "~4.12.2",
     "fluxible": "^0.4.10",
+    "forever": "~0.14.2",
     "highlight.js": "^8.4.0",
+    "http": "0.0.0",
     "jade": "^1.9.2",
     "jquery": "^2.1.4",
     "lodash.assign": "^3.0.0",
@@ -36,8 +38,8 @@
     "serve-favicon": "^2.2.0",
     "simple-http-proxy": "^0.5.11",
     "superagent": "^1.1.0",
-    "underscore": "^1.8.3",
-    "forever": "~0.14.2"
+    "tls": "0.0.1",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",

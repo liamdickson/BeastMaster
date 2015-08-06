@@ -11,11 +11,13 @@ var MothraTestList = require('./mothra/MothraTestList');
 var {Alert, Pager, PageItem, Well, Button, Label} = require('react-bootstrap');
 var partial = require('lodash.partial');
 var linkConstructor = require('./mixins/linkConstructor');
+var config = require('../../src/config');
 
 module.exports = React.createClass({
     mixins: [linkConstructor],
     render: function () {
         var page = Number(this.props.model.page);
+        var hits = Number(this.props.model.totalHits);
         var displayPage = page + 1;
         if(this.props.model.app === 'mothra') {
             return (
@@ -36,7 +38,7 @@ module.exports = React.createClass({
                         </PageItem>
                         <PageItem disabled>{displayPage}</PageItem>
                         <PageItem onSelect={partial(this.goToURL, {env: this.props.model.env,
-                            service: this.props.model.service, page: page+1})}>
+                            service: this.props.model.service, page: page+1})} disabled={displayPage * config.pageSize >= hits}>
                             Next
                         </PageItem>
                     </Pager>

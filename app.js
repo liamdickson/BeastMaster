@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var webpackConfig = require('./webpack.config.js');
 var proxy = require('simple-http-proxy');
 var config = require('./src/config');
+var http = require('http');
+var tls = require('tls');
 var webpackDevMiddleware;
 var webpack;
 
@@ -38,6 +40,26 @@ if (app.get('env') === 'development') {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/data/envs', function(req, res){
+    var creq = http.get(config.envsUrl, function (cres) {
+        cres.setEncoding('utf8');
+        cres.on('data', function(chunk){
+            res.write(chunk);
+        });
+        cres.on('close', function() {
+            res.end();
+        });
+        cres.on('end', function() {
+            res.end();
+        });
+    }).on('error', function(e) {
+        console.log(e);
+        res.writeHead(500);
+        res.end();
+    });
+    creq.end();
+});
 
 app.get('/data/*', function(req, res){
     res.setHeader("content-type", "text/json");

@@ -14,8 +14,7 @@ module.exports = State.extend({
         },
         env: {
             'type': 'string',
-            'required': false,
-            'values': config.getEnvs()
+            'required': false
         },
         service: {
             'type': 'string',
@@ -28,6 +27,9 @@ module.exports = State.extend({
         test: {
             'type': 'string',
             'default': ''
+        },
+        envs: {
+            'type': 'array'
         },
         isLoading: {
             'type': 'boolean',
@@ -43,6 +45,12 @@ module.exports = State.extend({
         },
         testData: {
             'type': 'object'
+        },
+        totalHits: {
+            'type': 'number'
+        },
+        testLoadingPercent: {
+            'type': 'number'
         },
         hideAll: {
             'type': 'boolean',

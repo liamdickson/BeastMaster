@@ -17,7 +17,11 @@ module.exports = {
         payload.page = payload.page || null;
 
         this.props.context.executeAction(actions.navigate, payload);
+        this.props.context.executeAction(actions.loadEnvs);
         this.checkLoad(payload);
+    },
+    goBack: function () {
+        window.history.back();
     },
     checkLoad: function(payload) {
         if (payload.test) {

@@ -35,6 +35,7 @@ module.exports = Router.extend({
         payload.service = service || config.defaultService;
         payload.test = test;
         payload.page = page;
+        this.context.executeAction(actions.loadEnvs);
         this.context.executeAction(actions.navigate, payload);
     }
 });

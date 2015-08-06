@@ -44,6 +44,9 @@ var config = module.exports = {
         }
     },
     emptyObject: function () {return {};},
-    esUrl: 'http://elastic.intranet.1stdibs.com:9200/mothra-*/',
-    pageSize: 10
+    envsUrl: 'http://sagan.intranet.1stdibs.com/version/data',
+    envsProxyUrl: '/data/envs',
+    // TODO: Make this functional for years after 2999!
+    esUrl: 'http://elastic.intranet.1stdibs.com:9200/mothra-2*/',
+    pageSize: 5
 };

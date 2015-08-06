@@ -27,6 +27,33 @@ class BeastMasterStore extends BaseStore {
         }
     }
 
+    loadEnvs() {
+        var envs = [];
+        this.loading(true);
+        $.ajax({
+            type: 'GET',
+            url: config.envsProxyUrl,
+            success: (result)=>{
+                try {
+                    JSON.parse(result).forEach((env)=> {
+                        if (env.fullStack && env.status === 'live') {
+                            envs.push(env.name.toUpperCase());
+                        }
+                    });
+                    this.model.set({envs});
+                } catch (e) {
+                    console.error(e);
+                }
+                this.loading(false);
+            },
+            error: (jqXHR, textStatus, error)=>{
+                console.error(error);
+                this.model.set({envs: config.getEnvs()});
+                this.loading(false);
+            }
+        });
+    }
+
     loadTest(payload) {
         if(payload.app === 'mothra'){
             this.loadMothraTest(payload);
@@ -54,6 +81,17 @@ class BeastMasterStore extends BaseStore {
             contentType: 'application/json',
             data: JSON.stringify(query),
             dataType: "json",
+            xhr: ()=>{
+                var xhr = new window.XMLHttpRequest();
+                //Download progress
+                xhr.addEventListener("progress", (evt)=>{
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        this.model.set({testLoadingPercent: percentComplete * 100});
+                    }
+                }, false);
+                return xhr;
+            },
             success: (result)=>{
                 if(result.hits.total) {
                     this.model.set({testData: result.hits.hits[0]._source});
@@ -61,9 +99,11 @@ class BeastMasterStore extends BaseStore {
                     this.setTestError('Test \"' + test + '\" not found.');
                 }
                 this.loading(false);
+                this.model.set({testLoadingPercent: 0});
             },
             error: (jqXHR, textStatus, error)=>{
                 this.setTestError(error);
+                this.model.set({testLoadingPercent: 0});
             }
         });
     }
@@ -115,15 +155,20 @@ class BeastMasterStore extends BaseStore {
             data: JSON.stringify(query),
             dataType: "json",
             success: (data)=>{
-                data.hits.hits.forEach((hit)=>{
-                    testDataSet[idConverter.hrToEpoch(hit.fields.timestamp[0])] = {
-                        env: hit.fields.env[0],
-                        service: hit.fields.service[0],
-                        state: hit.fields.state[0],
-                        timestamp: hit.fields.timestamp[0]
-                    }
-                });
-                this.model.set({testDataSet});
+                try {
+                    data.hits.hits.forEach((hit)=> {
+                        testDataSet[idConverter.hrToEpoch(hit.fields.timestamp[0])] = {
+                            env: hit.fields.env[0],
+                            service: hit.fields.service[0],
+                            state: hit.fields.state[0],
+                            timestamp: hit.fields.timestamp[0]
+                        }
+                    });
+                    this.model.set({totalHits: data.hits.total});
+                    this.model.set({testDataSet});
+                } catch (e) {
+                    console.error(e);
+                }
                 this.loading(false);
             },
             error: (jqXHR, textStatus, error)=>{
@@ -141,6 +186,7 @@ BeastMasterStore.storeName = 'BeastMasterStore';
 BeastMasterStore.handlers = {
     'navigate' : 'set',
     'set' : 'set',
+    'loadEnvs' : 'loadEnvs',
     'loadRecentTests' : 'loadRecentTests',
     'loadTest' : 'loadTest',
     'loading': 'loading'
