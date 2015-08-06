@@ -21,6 +21,7 @@ module.exports = Router.extend({
         })
     },
     getTestList(app, env, service, page) {
+        app = app || config.apps[0];
         this.goToUrl(app, env, service, null, page);
         this.context.executeAction(actions.loadRecentTests, {app, env, service, page});
     },
